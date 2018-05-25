@@ -32,12 +32,14 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             }
         }
 
+
         public int Id { get; set; }
         public string Name { get; set; }
         public IEnumerable<Result> ProgrammersResults { get; set; }
         public IEnumerable<Result> NonProgrammersResults { get; set; }
 
-        private IEnumerable<Result> MakeResults(IEnumerable<ResultEntity> resultEntities)
+
+        private static IEnumerable<Result> MakeResults(IEnumerable<ResultEntity> resultEntities)
         {
             var groupedResultEntities = resultEntities.GroupBy(re => re.Result);
             int numberOfResults = resultEntities.Count();
@@ -58,6 +60,12 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                 };
             }
         }
+
+        private static IEnumerable<Result> MakeResultsForScale(IEnumerable<ResultEntity> resultEntities, int scaleId)
+        {
+            return MakeResults(resultEntities.Where(re => re.ScaleId == scaleId));
+        }
+
 
         //  :: Расчёт коеффицентов корреляции ::
         //  :: Ковариация ::
@@ -80,7 +88,9 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 
         private static double CountCovariance(IEnumerable<ResultEntity> testResults, int firstScaleId, int secondScaleId)
         {
-            return CountCorrelationCoefficient(testResults, firstScaleId, secondScaleId, Correlation.Covariance);
+            var firstScaleResults = MakeResultsForScale(testResults, firstScaleId);
+            var secondScaleResults = MakeResultsForScale(testResults, secondScaleId);
+            return CountCorrelationCoefficient(firstScaleResults, firstScaleResults, Correlation.Covariance);
         }
 
 
@@ -104,7 +114,9 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 
         private static double CountPearsonCorrelationCoefficient(IEnumerable<ResultEntity> testResults, int firstScaleId, int secondScaleId)
         {
-            return CountCorrelationCoefficient(testResults, firstScaleId, secondScaleId, Correlation.PearsonCoefficient);
+            var firstScaleResults = MakeResultsForScale(testResults, firstScaleId);
+            var secondScaleResults = MakeResultsForScale(testResults, secondScaleId);
+            return CountCorrelationCoefficient(firstScaleResults, firstScaleResults, Correlation.PearsonCoefficient);
         }
 
         // :: Расчёт функции корреляции ::
