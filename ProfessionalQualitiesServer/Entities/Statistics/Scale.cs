@@ -45,7 +45,7 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             foreach (var group in groupedResultEntities)
             {
                 int times = group.Count();
-                var points = group.Select(re => re.Points);
+                var points = group.Select(re => Convert.ToDouble(re.Points));
                 var m = Math.M(points);
 
                 yield return new Result
@@ -107,18 +107,29 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             return CountCorrelationCoefficient(testResults, firstScaleId, secondScaleId, Correlation.PearsonCoefficient);
         }
 
-        // Расчёт функции корреляции 
+        // :: Расчёт функции корреляции ::
+
         private static double CountCorrelationCoefficient(IEnumerable<ResultEntity> results,
                                                           int firstScaleId, 
                                                           int secondScaleId,
-                                                          Func<IEnumerable<int>, IEnumerable<int>, double> correlationFunction)
+                                                          Func<IEnumerable<double>, IEnumerable<double>, double> correlationFunction)
         {
             var firstScaleResultPoints = results.Where(re => re.ScaleId == firstScaleId)
-                                                .Select(re => re.Points);
+                                                .Select(re => Convert.ToDouble(re.Points));
             var secondScaleResultPoints = results.Where(re => re.ScaleId == secondScaleId)
-                                                 .Select(re => re.Points);
+                                                 .Select(re => Convert.ToDouble(re.Points));
 
             return correlationFunction(firstScaleResultPoints, secondScaleResultPoints);
+        }
+
+        private static double CountCorrelationCoefficient(IEnumerable<Result> firstResults,
+                                                          IEnumerable<Result> secondResults,
+                                                          Func<IEnumerable<double>, IEnumerable<double>, double> correlationFunction)
+        {
+            var firstResultProbabilities = firstResults.Select(r => r.Probability);
+            var secondResultProbabilities = secondResults.Select(r => r.Probability);
+
+            return correlationFunction(firstResultProbabilities, secondResultProbabilities);
         }
     }
 }

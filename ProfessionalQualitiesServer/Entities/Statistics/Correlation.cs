@@ -6,13 +6,13 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 {
     public static class Correlation
     {
-        public static double Covariance(IEnumerable<int> x, IEnumerable<int> y)
+        public static double Covariance(IEnumerable<double> x, IEnumerable<double> y)
         {
             return Math.M(Math.Multiply(x, y)) - Math.M(x) * Math.M(y);
         }
 
-        public static double PearsonCoefficient(IEnumerable<int> x, IEnumerable<int> y) => LinearCoefficient(x, y);
-        public static double LinearCoefficient(IEnumerable<int> x, IEnumerable<int> y)
+        public static double PearsonCoefficient(IEnumerable<double> x, IEnumerable<double> y) => LinearCoefficient(x, y);
+        public static double LinearCoefficient(IEnumerable<double> x, IEnumerable<double> y)
         {
             var count = x.Count();
             if (count != y.Count())
