@@ -56,7 +56,7 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                     Times = times,
                     ExpectedPoints = m,
                     Variance = Math.D(points, m),
-                    Probability = Convert.ToDouble(times) / numberOfResults
+                    Frequency = Convert.ToDouble(times) / numberOfResults
                 };
             }
         }
@@ -138,10 +138,10 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                                                           IEnumerable<Result> secondResults,
                                                           Func<IEnumerable<double>, IEnumerable<double>, double> correlationFunction)
         {
-            var firstResultProbabilities = firstResults.Select(r => r.Probability);
-            var secondResultProbabilities = secondResults.Select(r => r.Probability);
+            var firstResultsFrequencies = firstResults.Select(r => r.Frequency);
+            var secondResultsFrequencies = secondResults.Select(r => r.Frequency);
 
-            return correlationFunction(firstResultProbabilities, secondResultProbabilities);
+            return correlationFunction(firstResultsFrequencies, secondResultsFrequencies);
         }
     }
 }
