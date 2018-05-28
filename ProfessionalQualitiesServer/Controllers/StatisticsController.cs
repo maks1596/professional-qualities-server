@@ -35,7 +35,7 @@ namespace ProfessionalQualitiesServer.Controllers
             }
 
             var testEntity = GetTestEntity(testId);
-            return Ok(new Test(testEntity));
+            return Ok(new Entities.Statistics.Test(testEntity));
         }
 
         // GET: api/statistics/covariance?testId=1&firstScaleId=1&secondScaleId=2
