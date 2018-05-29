@@ -16,6 +16,7 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                                        .Where(re => re.ScaleId == scaleEntity.Id);
             var groupedResultEntities = allResultEntities.GroupBy(IsProgrammer);
 
+            GroupsResults = new List<GroupResults>();
             GroupsResults.Add(new GroupResults(Constants.EveryoneGroupNameString, allResultEntities));
             foreach (var group in groupedResultEntities)
             {

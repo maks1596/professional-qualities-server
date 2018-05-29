@@ -22,18 +22,7 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 
             foreach (var group in groupedResultEntities)
             {
-                int times = group.Count();
-                var points = group.Select(re => Convert.ToDouble(re.Points));
-                var m = Math.M(points);
-
-                yield return new Result
-                {
-                    Formulation = group.Key,
-                    Times = times,
-                    ExpectedPoints = m,
-                    Variance = Math.D(points, m),
-                    Frequency = Convert.ToDouble(times) / numberOfResults
-                };
+                yield return new Result(group.Key, group, numberOfResults);
             }
         }
     }

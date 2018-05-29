@@ -15,5 +15,11 @@
         public const string EveryoneGroupNameString = "Все";
         public const string ProgrammersGroupNameString = "Программисты";
         public const string NonProgrammersGroupNameString = "Не программисты";
+
+        public const string DistributionCenterIndicatorGroupName = "Показатели центра распределения";
+        public const string VariationIndicatorGroupName = "Показатели вариации";
+
+        public const string ExpectedValueIndicatorName = "Мат. ожидание";
+        public const string VarianceIndicatorName = "Дисперсия";
     }
 }
