@@ -285,7 +285,9 @@ namespace ProfessionalQualitiesServer.Controllers
                     Points = scaleResult.Points,
                     Result = scaleResult.Result
                 };
+                _dbContext.Add(resultEntity);
             }
+            _dbContext.SaveChanges();
         }
     }
 }
