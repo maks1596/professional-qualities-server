@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ProfessionalQualitiesServer
+﻿namespace ProfessionalQualitiesServer
 {
     public static class Constants
     {
@@ -16,5 +11,9 @@ namespace ProfessionalQualitiesServer
         public const string DefaultRoleString = UserRoleString;
 
         public const string ProgrammerProfessionString = "Программист";
+
+        public const string EveryoneGroupNameString = "Все";
+        public const string ProgrammersGroupNameString = "Программисты";
+        public const string NonProgrammersGroupNameString = "Не программисты";
     }
 }

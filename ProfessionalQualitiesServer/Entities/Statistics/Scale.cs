@@ -12,19 +12,20 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             Name = scaleEntity.Name;
 
 
-            
-            var groupedResultEntities = testEntity.GetResults()
-                                                  .Where(re => re.ScaleId == scaleEntity.Id)
-                                                  .GroupBy(IsProgrammer);
+            var allResultEntities = testEntity.GetResults()
+                                       .Where(re => re.ScaleId == scaleEntity.Id);
+            var groupedResultEntities = allResultEntities.GroupBy(IsProgrammer);
+
+            GroupsResults.Add(new GroupResults(Constants.EveryoneGroupNameString, allResultEntities));
             foreach (var group in groupedResultEntities)
             {
                 if (group.Key)  // Программист
                 {
-                    ProgrammersResults = MakeResults(group);
+                    GroupsResults.Add(new GroupResults(Constants.ProgrammersGroupNameString, group));
                 }
                 else            // Не программист
                 {
-                    NonProgrammersResults = MakeResults(group);
+                    GroupsResults.Add(new GroupResults(Constants.NonProgrammersGroupNameString, group));
                 }
             }
         }
@@ -32,34 +33,12 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<Result> ProgrammersResults { get; set; }
-        public IEnumerable<Result> NonProgrammersResults { get; set; }
+        public List<GroupResults> GroupsResults { get; set; }
 
-        private static IEnumerable<Result> MakeResults(IEnumerable<ResultEntity> resultEntities)
-        {
-            var groupedResultEntities = resultEntities.GroupBy(re => re.Result);
-            int numberOfResults = resultEntities.Count();
-
-            foreach (var group in groupedResultEntities)
-            {
-                int times = group.Count();
-                var points = group.Select(re => Convert.ToDouble(re.Points));
-                var m = Math.M(points);
-
-                yield return new Result
-                {
-                    Formulation = group.Key,
-                    Times = times,
-                    ExpectedPoints = m,
-                    Variance = Math.D(points, m),
-                    Frequency = Convert.ToDouble(times) / numberOfResults
-                };
-            }
-        }
 
         private static IEnumerable<Result> MakeResultsForScale(IEnumerable<ResultEntity> resultEntities, int scaleId)
         {
-            return MakeResults(resultEntities.Where(re => re.ScaleId == scaleId));
+            return GroupResults.MakeResults(resultEntities.Where(re => re.ScaleId == scaleId));
         }
 
         private bool IsProgrammer(ResultEntity re)
