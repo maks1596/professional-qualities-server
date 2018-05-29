@@ -11,14 +11,11 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             Id = scaleEntity.Id;
             Name = scaleEntity.Name;
 
+
+            
             var groupedResultEntities = testEntity.GetResults()
                                                   .Where(re => re.ScaleId == scaleEntity.Id)
-                                                  .GroupBy(re => re.PassedTest
-                                                                   .Tested
-                                                                   .PersonalData
-                                                                   .Profession
-                                                                   .Name == Constants.ProgrammerProfessionString
-                                                           );
+                                                  .GroupBy(IsProgrammer);
             foreach (var group in groupedResultEntities)
             {
                 if (group.Key)  // Программист
@@ -37,7 +34,6 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
         public string Name { get; set; }
         public IEnumerable<Result> ProgrammersResults { get; set; }
         public IEnumerable<Result> NonProgrammersResults { get; set; }
-
 
         private static IEnumerable<Result> MakeResults(IEnumerable<ResultEntity> resultEntities)
         {
@@ -66,6 +62,15 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             return MakeResults(resultEntities.Where(re => re.ScaleId == scaleId));
         }
 
+        private bool IsProgrammer(ResultEntity re)
+        {
+            var personalData = re.PassedTest.Tested.PersonalData;
+            if (personalData != null)
+            {
+                return personalData.Profession.Name == Constants.ProgrammerProfessionString;
+            }
+            return false;
+        }
 
         //  :: Расчёт коеффицентов корреляции ::
         //  :: Ковариация ::

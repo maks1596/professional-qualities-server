@@ -69,6 +69,10 @@ namespace ProfessionalQualitiesServer.Controllers
             return _dbContext.Tests
                              .Include(te => te.PassedTests)
                                 .ThenInclude(pte => pte.Results)
+                            .Include(te => te.PassedTests)
+                                .ThenInclude(pte => pte.Tested)
+                                    .ThenInclude(te => te.PersonalData)
+                                        .ThenInclude(pde => pde.Profession)
                             .Include(te => te.EvaluationMap)
                                 .ThenInclude(ke => ke.Scale)
                             .Include(te => te.Key)
