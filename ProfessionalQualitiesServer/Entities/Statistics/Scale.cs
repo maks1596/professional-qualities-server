@@ -14,21 +14,8 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 
             var allResultEntities = testEntity.GetResults()
                                        .Where(re => re.ScaleId == scaleEntity.Id);
-            var groupedResultEntities = allResultEntities.GroupBy(IsProgrammer);
-
-            GroupsResults = new List<GroupResults>();
-            GroupsResults.Add(new GroupResults(Constants.EveryoneGroupNameString, allResultEntities));
-            foreach (var group in groupedResultEntities)
-            {
-                if (group.Key)  // Программист
-                {
-                    GroupsResults.Add(new GroupResults(Constants.ProgrammersGroupNameString, group));
-                }
-                else            // Не программист
-                {
-                    GroupsResults.Add(new GroupResults(Constants.NonProgrammersGroupNameString, group));
-                }
-            }
+            InitGroupsResults(allResultEntities);
+            
         }
 
 
@@ -36,6 +23,29 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
         public string Name { get; set; }
         public List<GroupResults> GroupsResults { get; set; }
 
+        private void InitGroupsResults(IEnumerable<ResultEntity> allResultEntities)
+        {
+            var programmerGroupResults = new GroupResults(Constants.ProgrammersGroupNameString);
+            var nonProgrammerGroupResults = new GroupResults(Constants.NonProgrammersGroupNameString);
+            var groupedResultEntities = allResultEntities.GroupBy(IsProgrammer);
+
+            foreach (var group in groupedResultEntities)
+            {
+                if (group.Key)  // Программист
+                {
+                    programmerGroupResults.Results = GroupResults.MakeResults(group);
+                }
+                else            // Не программист
+                {
+                    nonProgrammerGroupResults.Results = GroupResults.MakeResults(group);
+                }
+            }
+
+            GroupsResults = new List<GroupResults>();
+            GroupsResults.Add(new GroupResults(Constants.EveryoneGroupNameString, allResultEntities));
+            GroupsResults.Add(programmerGroupResults);
+            GroupsResults.Add(nonProgrammerGroupResults);
+        }
 
         private static IEnumerable<Result> MakeResultsForScale(IEnumerable<ResultEntity> resultEntities, int scaleId)
         {

@@ -6,6 +6,12 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 {
     public class GroupResults
     {
+        public GroupResults(string groupName)
+        {
+            GroupName = groupName;
+            Results = new List<Result>();
+        }
+
         public GroupResults(string groupName, IEnumerable<ResultEntity> resultEntities)
         {
             GroupName = groupName;
