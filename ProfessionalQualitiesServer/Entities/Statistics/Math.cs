@@ -39,7 +39,7 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             var count = values.Count();
             if (count < 1)
             {
-                throw new ArithmeticException(nameof(values));
+                throw new ArgumentOutOfRangeException(nameof(values));
             }
 
             var middlePoint = count / 2;
@@ -54,6 +54,21 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             }
         }
 
+        public static double Quantile(IEnumerable<double> values, double percent)
+        {
+            if (values == null)
+            {
+                throw new ArgumentException(nameof(values));
+            }
+            var count = values.Count();
+            if (count < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(values));
+            }
+            int index = (int)(percent * count);
+            return values.OrderBy(v => v).ElementAt(index);
+        }
+
         public static double D(IEnumerable<double> values) => Variance(values);
         public static double Variance(IEnumerable<double> values) => Variance(values, M(values));
 
@@ -61,6 +76,11 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
         public static double Variance(IEnumerable<double> values, double expectedValue)
         {
             return M(values.Select(x => System.Math.Pow(x - expectedValue, 2)));
+        }
+
+        public static double InterquartileRange(IEnumerable<double> values)
+        {
+            return Quantile(values, 0.75) - Quantile(values, 0.25);
         }
 
         public static IEnumerable<double> Multiply(IEnumerable<double> x, IEnumerable<double> y)

@@ -29,6 +29,6 @@
         public const string DataRangeIndicatorName = "Размах";
         public const string VarianceIndicatorName = "Дисперсия";
         public const string StandartDeviationIndicatorName = "Стандартное отклонение";
-        public const string InterquartileRangeIndicatorName = "Интерквартальный размах";
+        public const string InterquartileRangeIndicatorName = "Интерквартильный размах";
     }
 }

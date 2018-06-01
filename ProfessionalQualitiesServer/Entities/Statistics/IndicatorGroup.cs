@@ -65,6 +65,11 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                 Name = Constants.VarianceIndicatorName,
                 Value = Math.D(values)
             });
+            Indicators.Add(new Indicator
+            {
+                Name = Constants.InterquartileRangeIndicatorName,
+                Value = Math.InterquartileRange(values)
+            });
         }
     }
 }
