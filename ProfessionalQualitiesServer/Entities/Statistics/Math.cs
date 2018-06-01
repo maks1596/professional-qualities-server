@@ -81,6 +81,15 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             return values.OrderBy(v => v).ElementAt(index);
         }
 
+        public static double DataRange(IEnumerable<double> values)
+        {
+            if (values == null)
+            {
+                throw new ArgumentException(nameof(values));
+            }
+            return values.Max() - values.Min();
+        }
+
         public static double D(IEnumerable<double> values) => Variance(values);
         public static double Variance(IEnumerable<double> values) => Variance(values, M(values));
 
