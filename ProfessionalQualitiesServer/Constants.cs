@@ -16,10 +16,19 @@
         public const string ProgrammersGroupNameString = "Программисты";
         public const string NonProgrammersGroupNameString = "Не программисты";
 
-        public const string DistributionCenterIndicatorGroupName = "Показатели центра распределения";
-        public const string VariationIndicatorGroupName = "Показатели вариации";
+        public const string DistributionIndicatorGroupName = "Показатели распределения";
+        public const string MinimumValueIndicatorName = "Мин.";
+        public const string MaximumValueIndicatorName = "Макс.";
 
+        public const string DistributionCenterIndicatorGroupName = "Показатели центра распределения";
         public const string ExpectedValueIndicatorName = "Мат. ожидание";
+        public const string MedianIndicatorName = "Медиана";
+        public const string ModeIndicatorName = "Мода";
+
+        public const string VariationIndicatorGroupName = "Показатели вариации";
+        public const string DataRangeIndicatorName = "Размах";
         public const string VarianceIndicatorName = "Дисперсия";
+        public const string StandartDeviationIndicatorName = "Стандартное отклонение";
+        public const string InterquartileRangeIndicatorName = "Интерквартальный размах";
     }
 }
