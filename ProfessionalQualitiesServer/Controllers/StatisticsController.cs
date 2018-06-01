@@ -38,32 +38,6 @@ namespace ProfessionalQualitiesServer.Controllers
             return Ok(new Entities.Statistics.Test(testEntity));
         }
 
-        // GET: api/statistics/covariance?testId=1&firstScaleId=1&secondScaleId=2
-        [HttpGet("covariance")]
-        public IActionResult GetCovariance(int testId, int firstScaleId, int secondScaleId)
-        {
-            if (!_dbContext.PassedTests.Any(pte => pte.TestId == testId))
-            {
-                return NotFound();
-            }
-
-            var testEntity = GetTestEntity(testId);
-            return Ok(new { value = Entities.Statistics.Scale.CountCovariance(testEntity, firstScaleId, secondScaleId) });
-        }
-
-        // GET: api/statistics/pearson?testId=1&firstScaleId=1&secondScaleId=2
-        [HttpGet("pearson")]
-        public IActionResult GetPearson(int testId, int firstScaleId, int secondScaleId)
-        {
-            if (!_dbContext.PassedTests.Any(pte => pte.TestId == testId))
-            {
-                return NotFound();
-            }
-
-            var testEntity = GetTestEntity(testId);
-            return Ok(new { value = Entities.Statistics.Scale.CountPearsonCorrelationCoefficient(testEntity, firstScaleId, secondScaleId) });
-        }
-
         private TestEntity GetTestEntity(int testId)
         {
             return _dbContext.Tests
