@@ -65,10 +65,16 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
         {
             Name = Constants.VariationIndicatorGroupName;
 
+            var d = Math.D(values);
             Indicators.Add(new Indicator
             {
                 Name = Constants.VarianceIndicatorName,
-                Value = Math.D(values)
+                Value = d
+            });
+            Indicators.Add(new Indicator
+            {
+                Name = Constants.StandartDeviationIndicatorName,
+                Value = Math.StandartDeviation(d)
             });
             Indicators.Add(new Indicator
             {

@@ -90,6 +90,16 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             return M(values.Select(x => System.Math.Pow(x - expectedValue, 2)));
         }
 
+        public static double StandartDeviation(IEnumerable<double> values)
+        {
+            return StandartDeviation(D(values));
+        }
+
+        public static double StandartDeviation(double d)
+        {
+            return System.Math.Sqrt(d);
+        }
+
         public static double InterquartileRange(IEnumerable<double> values)
         {
             return Quantile(values, 0.75) - Quantile(values, 0.25);
