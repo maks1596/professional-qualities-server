@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ProfessionalQualitiesServer.Entities.Statistics
 {
@@ -12,6 +13,26 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 
         public string Name { get; set; }
         public List<Indicator> Indicators { get; set; }
+    }
+
+    public class DistributionIndicatorGroup : IndicatorGroup
+    {
+        public DistributionIndicatorGroup(IEnumerable<double> values) : base()
+        {
+            Name = Constants.DistributionIndicatorGroupName;
+
+            Indicators.Add(new Indicator
+            {
+                Name = Constants.MinimumValueIndicatorName,
+                Value = values.Min()
+            });
+
+            Indicators.Add(new Indicator
+            {
+                Name = Constants.MaximumValueIndicatorName,
+                Value = values.Max()
+            });
+        }
     }
 
     public class DistributionCenterIndicatorGroup : IndicatorGroup

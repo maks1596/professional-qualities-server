@@ -14,6 +14,7 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 
             IndicatorGroups = new List<IndicatorGroup>();
             var points = resultEntities.Select(re => Convert.ToDouble(re.Points));
+            IndicatorGroups.Add(new DistributionIndicatorGroup(points));
             IndicatorGroups.Add(new DistributionCenterIndicatorGroup(points));
             IndicatorGroups.Add(new VariationIndicatorGroup(points));
         }
