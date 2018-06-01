@@ -54,6 +54,18 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             }
         }
 
+        public static double Mode(IEnumerable<double> values)
+        {
+            if (values == null)
+            {
+                throw new ArgumentException(nameof(values));
+            }
+            var valueCount = values.GroupBy(v => v)
+                         .Select(gv => new { value = gv.Key, count = gv.Count() });
+            var maxCount = valueCount.Max(vc => vc.count);
+            return valueCount.Where(vc => vc.count == maxCount).First().value;
+        }
+
         public static double Quantile(IEnumerable<double> values, double percent)
         {
             if (values == null)
