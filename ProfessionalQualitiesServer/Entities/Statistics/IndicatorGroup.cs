@@ -46,6 +46,11 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                 Name = Constants.ExpectedValueIndicatorName,
                 Value = Math.M(values)
             });
+            Indicators.Add(new Indicator
+            {
+                Name = Constants.MedianIndicatorName,
+                Value = Math.Median(values)
+            });
         }
     }
 

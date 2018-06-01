@@ -29,6 +29,30 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             return values.Average();
         }
 
+        public static double Median(IEnumerable<double> values)
+        {
+            if (values == null)
+            {
+                throw new ArgumentException(nameof(values));
+            }
+
+            var count = values.Count();
+            if (count < 1)
+            {
+                throw new ArithmeticException(nameof(values));
+            }
+
+            var middlePoint = count / 2;
+            var sortedValues = values.OrderBy(v => v);
+            if (count % 2 == 0)
+            {
+                return (sortedValues.ElementAt(middlePoint - 1) + sortedValues.ElementAt(middlePoint)) / 2;
+            }
+            else
+            {
+                return sortedValues.ElementAt(middlePoint);
+            }
+        }
 
         public static double D(IEnumerable<double> values) => Variance(values);
         public static double Variance(IEnumerable<double> values) => Variance(values, M(values));
