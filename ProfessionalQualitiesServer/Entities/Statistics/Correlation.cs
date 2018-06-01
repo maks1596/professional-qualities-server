@@ -8,7 +8,8 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
     {
         public static double Covariance(IEnumerable<double> x, IEnumerable<double> y)
         {
-            return Math.M(Math.Multiply(x, y)) - Math.M(x) * Math.M(y);
+            var xy = Math.Multiply(x, y);
+            return Math.M(xy) - Math.M(x) * Math.M(y);
         }
 
         public static double PearsonCoefficient(IEnumerable<double> x, IEnumerable<double> y) => LinearCoefficient(x, y);
