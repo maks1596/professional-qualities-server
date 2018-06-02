@@ -12,6 +12,9 @@
         public const string UserRoleString = "User";
         public const string DefaultRoleString = UserRoleString;
 
+        public const string PassedTestStatusString = "Passed";
+        public const string NotPassedTestStatusString = "NotPassed";
+
         public const string ProgrammerProfessionString = "Программист";
 
         public const string EveryoneGroupNameString = "Все";
