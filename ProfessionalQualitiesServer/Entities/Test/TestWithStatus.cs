@@ -7,23 +7,21 @@ namespace ProfessionalQualitiesServer.Entities
 {
     public class TestWithStatus : ShortTestInfo
     {
-        const string kPassedTestStatusString = "Passed";
-        const string kNotPassedTestStatusString = "NotPassed";
-
         public TestWithStatus() : base()
         {
-            Status = kNotPassedTestStatusString;
+            Status = Constants.NotPassedTestStatusString;
         }
 
-        public TestWithStatus(TestEntity testEntity) : base(testEntity)
+        public TestWithStatus(TestEntity testEntity, int userId) : base(testEntity)
         {
-            if (testEntity.PassedTests != null && testEntity.PassedTests.Count > 0)
+            if (testEntity.PassedTests != null &&
+                testEntity.PassedTests.Any(pte => pte.TestedId == userId))
             {
-                Status = kPassedTestStatusString;
+                Status = Constants.PassedTestStatusString;
             }
             else
             {
-                Status = kNotPassedTestStatusString;
+                Status = Constants.NotPassedTestStatusString;
             }
         }
 

@@ -112,30 +112,16 @@ namespace ProfessionalQualitiesServer.Controllers
         [HttpGet("for-user/{userId}")]
         public IActionResult GetTestsForUser(int userId)
         {
-            if (_dbContext.Users.Any(ue => ue.Id == userId))
+            if (!_dbContext.Users.Any(ue => ue.Id == userId))
             {
-                var testEntitites = _dbContext.Tests
-                    .Include(te => te.PassedTests)
-                    .OrderBy(te => te.Name);
-
-                foreach (var testEntity in testEntitites)
-                {
-                    if (testEntity.PassedTests != null && testEntity.PassedTests.Count > 0)
-                    {
-                        testEntity.PassedTests = testEntity.PassedTests
-                            .Where(pte => pte.TestedId == userId)
-                            .ToList();
-                    }
-                }
-
-                var testsWithStatus = testEntitites
-                    .Select(te => new TestWithStatus(te));
-                return Ok(testsWithStatus);
+                return Unauthorized();
             }
-            else
-            {
-                return NotFound();
-            }
+
+            var testsWithStatus = _dbContext.Tests
+                .Include(te => te.PassedTests)
+                .OrderBy(te => te.Name)
+                .Select(te => new TestWithStatus(te, userId));
+            return Ok(testsWithStatus);
         }
 
         // PUT api/tests
