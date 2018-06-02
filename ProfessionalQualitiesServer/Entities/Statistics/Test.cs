@@ -7,7 +7,9 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
     {
         public Test(TestEntity testEntity) : base(testEntity)
         {
-            Scales = testEntity.GetScales().Select(se => new Scale(testEntity, se));
+            Scales = testEntity.GetScales()
+                               .OrderBy(se => se.Name)
+                               .Select(se => new Scale(testEntity, se));
         }
 
         public IEnumerable<Scale> Scales { get; set; }
