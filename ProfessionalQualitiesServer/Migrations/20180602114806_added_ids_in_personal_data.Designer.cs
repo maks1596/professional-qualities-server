@@ -11,9 +11,10 @@ using System;
 namespace ProfessionalQualitiesServer.Migrations
 {
     [DbContext(typeof(ProfessionalQualitiesDbContext))]
-    partial class ProfessionalQualitiesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180602114806_added_ids_in_personal_data")]
+    partial class added_ids_in_personal_data
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

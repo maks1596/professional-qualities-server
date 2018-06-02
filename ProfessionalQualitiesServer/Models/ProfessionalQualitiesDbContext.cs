@@ -132,12 +132,16 @@ namespace ProfessionalQualitiesServer
     public class PersonalDataEntity
     {
         public int Id { get; set; }
-        public UserEntity User { get; set; }
         public string Name { get; set; }
         public bool IsMale { get; set; }
         public DateTime Birthday { get; set; }
-        public ProfessionEntity Profession { get; set; }
         public int ExpertAssessment { get; set; }
+
+        public int UserId { get; set; }
+        public UserEntity User { get; set; }
+
+        public int ProfessionId { get; set; }
+        public ProfessionEntity Profession { get; set; }
     }
 
     //  :: Тест ::
