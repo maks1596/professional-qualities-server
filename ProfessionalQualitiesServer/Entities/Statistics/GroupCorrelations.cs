@@ -11,13 +11,19 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
         {
             bool WhereProfessionId(PassedTestEntity pte)
             {
+                var personalData = pte.Tested.PersonalData;
+                if (personalData == null)
+                {
+                    return false;
+                }
+
                 if (professionId > 0)
                 {
-                    return pte.Tested.PersonalData.Profession.Id == professionId;
+                    return personalData.ProfessionId == professionId;
                 }
                 else if (professionId < 0)
                 {
-                    return pte.Tested.PersonalData.Profession.Id != (-professionId);
+                    return personalData.ProfessionId != (-professionId);
                 }
                 return true;
             }
@@ -30,18 +36,7 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 
             var expertAssessments = resultEntities.Select(re => Convert.ToDouble(re.PassedTest.Tested.PersonalData.ExpertAssessment));
             var points = resultEntities.Select(re => Convert.ToDouble(re.Points));
-
-            CorrelationValues = new List<CorrelationValue>();
-            CorrelationValues.Add(new CorrelationValue
-            {
-                Name = Constants.CovarianceName,
-                Value = Correlation.Covariance(expertAssessments, points)
-            });
-            CorrelationValues.Add(new CorrelationValue
-            {
-                Name = Constants.PearsonCoefficientName,
-                Value = Correlation.PearsonCoefficient(expertAssessments, points)
-            });
+            CorrelationValues = CorrelationValuesFactory.CountCorrelations(expertAssessments, points);                 
         }
 
         public GroupCorrelations(TestEntity testEntity, int scaleId)
@@ -54,11 +49,16 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             : this(testEntity, scaleId) => GroupName = groupName;
 
         public string GroupName { get; set; }
-        public List<CorrelationValue> CorrelationValues { get; set; }
+        public IEnumerable<CorrelationValue> CorrelationValues { get; set; }
+        
 
         private bool WhereTestedEstimated(PassedTestEntity pte)
         {
-            return pte.Tested.PersonalData.ExpertAssessment > -1;
+            var personalData = pte.Tested.PersonalData;
+            if (personalData != null) {
+                return personalData.ExpertAssessment > -1;
+            }
+            return false;
         }
     }
 }

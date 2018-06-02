@@ -2,6 +2,8 @@
 {
     public static class Constants
     {
+        public const string NotString = "Не";
+
         public const string FemaleGenderString = "Female";
         public const string MaleGenderString = "Male";
         public const string DefaultGenderString = MaleGenderString;

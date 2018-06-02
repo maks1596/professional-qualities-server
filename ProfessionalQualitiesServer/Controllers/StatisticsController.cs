@@ -29,9 +29,9 @@ namespace ProfessionalQualitiesServer.Controllers
         [HttpGet("{testId}")]
         public IActionResult Get(int testId)
         {
-            if (!_dbContext.PassedTests.Any(pte => pte.TestId == testId))
+            if (!isTestPassed(testId))
             {
-                return NotFound();
+                return NotFound(testId);
             }
 
             var testEntity = GetTestEntity(testId);
@@ -42,13 +42,13 @@ namespace ProfessionalQualitiesServer.Controllers
         [HttpGet("correlations/{testId}/{scaleId}")]
         public IActionResult GetCorrelations(int testId, int scaleId)
         {
-            if (!_dbContext.PassedTests.Any(pte => pte.TestId == testId))
+            if (!isTestPassed(testId))
             {
                 return NotFound(testId);
             }
 
             var testEntity = GetTestEntity(testId);
-            if (!testEntity.GetScales().Any(se => se.Id == scaleId))
+            if (!doesTestContainsTheScale(testEntity, scaleId))
             {
                 return NotFound(scaleId);
             }
@@ -60,12 +60,19 @@ namespace ProfessionalQualitiesServer.Controllers
         [HttpGet("correlations/{testId}/{scaleId}/{professionId}")]
         public IActionResult GetCorrelations(int testId, int scaleId, int professionId)
         {
-            if (!_dbContext.PassedTests.Any(pte => pte.TestId == testId))
+            if (!isTestPassed(testId))
             {
-                return NotFound();
+                return NotFound(testId);
             }
 
             var testEntity = GetTestEntity(testId);
+            if (!doesTestContainsTheScale(testEntity, scaleId))
+            {
+                return NotFound(scaleId);
+            }
+
+            string groupName = MakeGroupName(professionId);
+            return Ok(new GroupCorrelations(testEntity, scaleId, professionId, groupName));
         }
 
         private IEnumerable<GroupCorrelations> MakeDefaultGroupsCorrelations(TestEntity testEntity, int scaleId)
@@ -76,6 +83,25 @@ namespace ProfessionalQualitiesServer.Controllers
             yield return new GroupCorrelations(testEntity, scaleId, Constants.EveryoneGroupNameString);
             yield return new GroupCorrelations(testEntity, scaleId, programmerProfessionId, Constants.ProgrammersGroupNameString);
             yield return new GroupCorrelations(testEntity, scaleId, -programmerProfessionId, Constants.NonProgrammersGroupNameString);
+        }
+
+        private string MakeGroupName(int professionId)
+        {
+            if (professionId == 0)
+            {
+                return Constants.EveryoneGroupNameString;
+            }
+
+            if (professionId > 0)
+            {
+                return _dbContext.Professions.Single(pe => pe.Id == professionId).Name;
+            }
+            else
+            {
+                var professionName = _dbContext.Professions.Single(pe => pe.Id == -professionId).Name;
+                return $"{Constants.NotString} {professionName}";
+            }
+
         }
 
         private TestEntity GetTestEntity(int testId)
@@ -93,5 +119,10 @@ namespace ProfessionalQualitiesServer.Controllers
                                 .ThenInclude(ke => ke.Scale)
                             .Single(te => te.Id == testId);
         }
+
+        bool isTestPassed(int testId) => _dbContext.PassedTests.Any(pte => pte.TestId == testId);
+        bool doesTestContainsTheScale(TestEntity testEntity, int scaleId)
+            => testEntity.GetScales().Any(se => se.Id == scaleId);
+
     }
 }
