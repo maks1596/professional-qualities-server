@@ -13,9 +13,9 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 
 
             var allResultEntities = testEntity.GetResults()
-                                       .Where(re => re.ScaleId == scaleEntity.Id);
+                                              .Where(re => re.ScaleId == scaleEntity.Id)
+                                              .OrderByDescending(re => re.Points);
             InitGroupsResults(allResultEntities);
-            
         }
 
 
