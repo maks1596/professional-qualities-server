@@ -30,5 +30,9 @@
         public const string VarianceIndicatorName = "Дисперсия";
         public const string StandartDeviationIndicatorName = "Стандартное отклонение";
         public const string InterquartileRangeIndicatorName = "Интерквартильный размах";
+
+        public const string CovarianceName = "Ковариация";
+        public const string LinearCoefficientName = "Линейный коэффициент (Пирсона)";
+        public const string PearsonCoefficientName = LinearCoefficientName;
     }
 }
