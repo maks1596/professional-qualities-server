@@ -22,6 +22,7 @@ namespace ProfessionalQualitiesServer.Controllers
         {
             return _dbContext.Tests
                              .Include(te => te.PassedTests)
+                             .OrderBy(te => te.Name)
                              .Select(te => new PassedTestPreview(te));
         }
 
