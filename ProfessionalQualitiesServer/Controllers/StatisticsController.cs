@@ -38,6 +38,18 @@ namespace ProfessionalQualitiesServer.Controllers
             return Ok(new Entities.Statistics.Test(testEntity));
         }
 
+        // GET: api/statistics/correlations/testId/scaleId
+        [HttpGet("correlations/{testId}/{scaleId}")]
+        public IActionResult Get(int testId, int scaleId)
+        {
+            if (!_dbContext.PassedTests.Any(pte => pte.TestId == testId))
+            {
+                return NotFound();
+            }
+
+            var testEntity = GetTestEntity(testId);
+        }
+
         private TestEntity GetTestEntity(int testId)
         {
             return _dbContext.Tests
