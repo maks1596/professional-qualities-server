@@ -11,8 +11,8 @@ using System;
 namespace ProfessionalQualitiesServer.Migrations
 {
     [DbContext(typeof(ProfessionalQualitiesDbContext))]
-    [Migration("20180602114806_added_ids_in_personal_data")]
-    partial class added_ids_in_personal_data
+    [Migration("20180603194328_legendary_migration")]
+    partial class legendary_migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

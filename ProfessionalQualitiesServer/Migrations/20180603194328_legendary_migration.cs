@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ProfessionalQualitiesServer.Migrations
 {
-    public partial class one_huge_migration : Migration
+    public partial class legendary_migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,11 +35,7 @@ namespace ProfessionalQualitiesServer.Migrations
                     table.PrimaryKey("PK_Professions", x => x.Id);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Professions",
-                column: "Name",
-                value: Constants.ProgrammerProfessionString
-                );
+            migrationBuilder.InsertData("Professions", "Name", Constants.ProgrammerProfessionString);
 
             migrationBuilder.CreateTable(
                 name: "Roles",
@@ -55,11 +51,13 @@ namespace ProfessionalQualitiesServer.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Roles",
-                column: "Name",
-                values: new string[] 
-                    { Constants.UserRoleString, Constants.AdminRoleString }
-                );
+                "Roles", 
+                "Name", 
+                new object[] 
+                {
+                    Constants.AdminRoleString,
+                    Constants.UserRoleString
+                });
 
             migrationBuilder.CreateTable(
                 name: "Scales",
@@ -91,26 +89,57 @@ namespace ProfessionalQualitiesServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PersonalData",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Birthday = table.Column<DateTime>(nullable: false),
-                    ExpertAssessment = table.Column<int>(nullable: false),
-                    IsMale = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    ProfessionId = table.Column<int>(nullable: true)
+                    Deleted = table.Column<bool>(nullable: false),
+                    Login = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
+                    RoleId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonalData", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PersonalData_Professions_ProfessionId",
-                        column: x => x.ProfessionId,
-                        principalTable: "Professions",
+                        name: "FK_Users_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData("Users",
+                new string[]
+                {
+                    "Deleted",
+                    "Login",
+                    "Password",
+                    "RoleId"
+                },
+                new object[]
+                {
+                    false,
+                    "admin",
+                    "password",
+                    1
+                });
+
+            migrationBuilder.InsertData("Users",
+                new string[]
+                {
+                    "Deleted",
+                    "Login",
+                    "Password",
+                    "RoleId"
+                },
+                new object[]
+                {
+                    false,
+                    "user",
+                    "password",
+                    2
                 });
 
             migrationBuilder.CreateTable(
@@ -187,43 +216,61 @@ namespace ProfessionalQualitiesServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "PassedTests",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Deleted = table.Column<bool>(nullable: false),
-                    Login = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    PersonalDataId = table.Column<int>(nullable: true),
-                    RoleId = table.Column<int>(nullable: true)
+                    Date = table.Column<DateTime>(nullable: false),
+                    TestId = table.Column<int>(nullable: false),
+                    TestedId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_PassedTests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_PersonalData_PersonalDataId",
-                        column: x => x.PersonalDataId,
-                        principalTable: "PersonalData",
+                        name: "FK_PassedTests_Tests_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Tests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Users_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
+                        name: "FK_PassedTests_Users_TestedId",
+                        column: x => x.TestedId,
+                        principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new string[] {"Login", "Password", "RoleId", "Deleted"},
-                values: new object[,] 
-                { 
-                    { "admin", "password", 2, false }, 
-                    { "tested", "password", 1, false }
-                }
-                );
+            migrationBuilder.CreateTable(
+                name: "PersonalDataEntity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Birthday = table.Column<DateTime>(nullable: false),
+                    ExpertAssessment = table.Column<int>(nullable: false),
+                    IsMale = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    ProfessionId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonalDataEntity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PersonalDataEntity_Professions_ProfessionId",
+                        column: x => x.ProfessionId,
+                        principalTable: "Professions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PersonalDataEntity_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Keys",
@@ -290,33 +337,6 @@ namespace ProfessionalQualitiesServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PassedTests",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Date = table.Column<DateTime>(nullable: false),
-                    TestId = table.Column<int>(nullable: false),
-                    TestedId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PassedTests", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PassedTests_Tests_TestId",
-                        column: x => x.TestId,
-                        principalTable: "Tests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PassedTests_Users_TestedId",
-                        column: x => x.TestedId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Answers",
                 columns: table => new
                 {
@@ -355,6 +375,7 @@ namespace ProfessionalQualitiesServer.Migrations
                 {
                     PassedTestId = table.Column<int>(nullable: false),
                     ScaleId = table.Column<int>(nullable: false),
+                    Points = table.Column<int>(nullable: false),
                     Result = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -420,9 +441,15 @@ namespace ProfessionalQualitiesServer.Migrations
                 column: "TestedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersonalData_ProfessionId",
-                table: "PersonalData",
+                name: "IX_PersonalDataEntity_ProfessionId",
+                table: "PersonalDataEntity",
                 column: "ProfessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonalDataEntity_UserId",
+                table: "PersonalDataEntity",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_TestId",
@@ -445,12 +472,6 @@ namespace ProfessionalQualitiesServer.Migrations
                 column: "AnswerOptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_PersonalDataId",
-                table: "Users",
-                column: "PersonalDataId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
@@ -468,6 +489,9 @@ namespace ProfessionalQualitiesServer.Migrations
                 name: "Keys");
 
             migrationBuilder.DropTable(
+                name: "PersonalDataEntity");
+
+            migrationBuilder.DropTable(
                 name: "QuestionsAnswerOptions");
 
             migrationBuilder.DropTable(
@@ -475,6 +499,9 @@ namespace ProfessionalQualitiesServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "TestsAnswerOptions");
+
+            migrationBuilder.DropTable(
+                name: "Professions");
 
             migrationBuilder.DropTable(
                 name: "Questions");
@@ -495,13 +522,7 @@ namespace ProfessionalQualitiesServer.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "PersonalData");
-
-            migrationBuilder.DropTable(
                 name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "Professions");
         }
     }
 }
