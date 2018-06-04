@@ -48,6 +48,23 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             }
         }
 
+        public static double SpearmanCoefficient(IEnumerable<double> x, IEnumerable<double> y)
+        {
+            var count = x.Count();
+            if (count != y.Count())
+            {
+                throw new ArgumentException();
+            }
+
+            var rankX = Rank(x);
+            var rankY = Rank(y);
+
+            var d2Sum = rankX.Select((curX, index) => System.Math.Pow(curX - rankY.ElementAt(index), 2))
+                          .Sum();
+
+            return 1.0 - 6 * d2Sum / (System.Math.Pow(count, 3) - count);
+        }
+
         public static double KendallCoefficient(IEnumerable<double> x, IEnumerable<double> y)
         {
             var count = x.Count();

@@ -12,7 +12,8 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             {
                 { Constants.CovarianceName, Correlation.Covariance },
                 { Constants.PearsonCoefficientName, Correlation.PearsonCoefficient },
-                {Constants.KendallCoefficientName, Correlation.KendallCoefficient }
+                { Constants.SpearmanCoefficientName, Correlation.SpearmanCoefficient },
+                { Constants.KendallCoefficientName, Correlation.KendallCoefficient }
             };
 
         private static readonly Dictionary<string, string> CorrelationFullNames =
@@ -20,6 +21,7 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             {
                 { Constants.CovarianceName, Constants.CovarianceName },
                 { Constants.PearsonCoefficientName, Constants.PearsonCoefficientFullName },
+                { Constants.SpearmanCoefficientName, Constants.SpearmanCoefficientFullName },
                 { Constants.KendallCoefficientName, Constants.KendallCoefficientFullName }
             };
 
