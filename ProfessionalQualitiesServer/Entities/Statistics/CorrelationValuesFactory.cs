@@ -9,17 +9,19 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
     {
         private static readonly Dictionary<string, Func<IEnumerable<double>, IEnumerable<double>, double>> CorrelationFunctions = 
             new Dictionary<string, Func<IEnumerable<double>, IEnumerable<double>, double>>
-        {
-            { Constants.CovarianceName, Correlation.Covariance },
-            { Constants.PearsonCoefficientName, Correlation.PearsonCoefficient }
-        };
+            {
+                { Constants.CovarianceName, Correlation.Covariance },
+                { Constants.PearsonCoefficientName, Correlation.PearsonCoefficient },
+                {Constants.KendallCoefficientName, Correlation.KendallCoefficient }
+            };
 
         private static readonly Dictionary<string, string> CorrelationFullNames =
             new Dictionary<string, string>
-        {
-            { Constants.CovarianceName, Constants.CovarianceName },
-            { Constants.PearsonCoefficientName, Constants.PearsonCoefficientFullName }
-        };
+            {
+                { Constants.CovarianceName, Constants.CovarianceName },
+                { Constants.PearsonCoefficientName, Constants.PearsonCoefficientFullName },
+                { Constants.KendallCoefficientName, Constants.KendallCoefficientFullName }
+            };
 
         public static IEnumerable<CorrelationValue> CountCorrelations(IEnumerable<double> x, IEnumerable<double> y)
         {

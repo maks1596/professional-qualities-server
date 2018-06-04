@@ -40,5 +40,8 @@
 
         public const string PearsonCoefficientName = "Пирсон";
         public const string PearsonCoefficientFullName = "Линейный коэффициент (Пирсона)";
+
+        public const string KendallCoefficientName = "Кендалл";
+        public const string KendallCoefficientFullName = "Коэффициент корреляции Кендалла";
     }
 }

@@ -47,5 +47,54 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                 return sumXY / System.Math.Sqrt(sumX2 * sumY2);
             }
         }
+
+        public static double KendallCoefficient(IEnumerable<double> x, IEnumerable<double> y)
+        {
+            var count = x.Count();
+            if (count != y.Count())
+            {
+                throw new ArgumentException();
+            }
+
+            var rankX = Rank(x);
+            var rankY = Rank(y);
+
+            var xy = rankX.Select((curX, index) => new { x = curX, y = rankY.ElementAt(index) });
+            var sortedXY = xy.OrderBy(curXY => curXY.x);
+
+            int p = 0, q = 0;
+
+            for (int i = 0; i < count; ++i)
+            {
+                var curY = sortedXY.ElementAt(i).y;
+                int coincidenceCount = 0, inversionCount = 0; 
+
+                for (int j = i + 1; j < count; j++)
+                {
+                    if (y.ElementAt(j) > curY)
+                    {
+                        ++coincidenceCount;
+                    }
+                    else
+                    {
+                        ++inversionCount;
+                    }
+                }
+                p += coincidenceCount;
+                q += inversionCount;
+            }
+
+            return 2.0 * (p - q) / count / (count - 1);
+        }
+
+        private static IEnumerable<int> Rank(IEnumerable<double> values)
+        {
+            return values.Select(value => Rank(value, values));
+        }
+
+        private static int Rank(double value, IEnumerable<double> values)
+        {   // Знак сравнения роли не играет
+            return values.Count(curValue => curValue < value);
+        }
     }
 }
