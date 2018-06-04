@@ -19,6 +19,6 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
         public string Value { get; set; }
 
         public double GetDoubleValue() => Convert.ToDouble(Value);
-        public void SetDoubleValue(double value) => Value = value.ToString();
+        public void SetDoubleValue(double value) => Value = value.ToString("0.####");
     }
 }
