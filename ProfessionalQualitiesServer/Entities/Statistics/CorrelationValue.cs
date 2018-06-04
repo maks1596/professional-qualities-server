@@ -5,10 +5,12 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
     public class CorrelationValue
     {
         public CorrelationValue() : this("") { }
-        public CorrelationValue(string name) : this(name, "") { }
-        public CorrelationValue(string name, string value)
+        public CorrelationValue(string name) : this(name, name) { }
+        public CorrelationValue(string name, string fullName) : this(name, fullName, "") { }
+        public CorrelationValue(string name, string fullName, string value)
         {
             Name = name;
+            FullName = fullName;
             Value = value;
         }
 
@@ -16,6 +18,7 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             : this(name, value.ToString()) { }
 
         public string Name { get; set; }
+        public string FullName { get; set; }
         public string Value { get; set; }
 
         public double GetDoubleValue() => Convert.ToDouble(Value);

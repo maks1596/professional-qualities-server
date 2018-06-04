@@ -37,7 +37,8 @@
         public const string InterquartileRangeIndicatorName = "Интерквартильный размах";
 
         public const string CovarianceName = "Ковариация";
-        public const string LinearCoefficientName = "Линейный коэффициент (Пирсона)";
-        public const string PearsonCoefficientName = LinearCoefficientName;
+
+        public const string PearsonCoefficientName = "Пирсон";
+        public const string PearsonCoefficientFullName = "Линейный коэффициент (Пирсона)";
     }
 }
