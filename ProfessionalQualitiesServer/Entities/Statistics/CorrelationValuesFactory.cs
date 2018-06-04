@@ -21,7 +21,8 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                 var correlationValue = new CorrelationValue(name);
                 try
                 {
-                    correlationValue.SetDoubleValue(func(x, y));
+                    var result = func(x, y);
+                    correlationValue.SetDoubleValue(result);
                 }
                 catch (Exception) { }
                 yield return correlationValue;
