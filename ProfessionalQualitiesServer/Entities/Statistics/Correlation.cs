@@ -38,7 +38,14 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                 sumY2 += System.Math.Pow(difY, 2);
             }
 
-            return sumXY / System.Math.Sqrt(sumX2 * sumY2);
+            if (sumXY == 0 || sumX2 == 0 || sumY2 == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return sumXY / System.Math.Sqrt(sumX2 * sumY2);
+            }
         }
     }
 }
