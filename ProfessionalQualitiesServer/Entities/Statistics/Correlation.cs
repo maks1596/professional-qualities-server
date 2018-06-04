@@ -87,14 +87,18 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             return 2.0 * (p - q) / count / (count - 1);
         }
 
-        private static IEnumerable<int> Rank(IEnumerable<double> values)
+        private static IEnumerable<double> Rank(IEnumerable<double> values)
         {
-            return values.Select(value => Rank(value, values));
+            return values.Select(value => Rank(value, values)).ToList();
         }
 
-        private static int Rank(double value, IEnumerable<double> values)
+
+        private static double Rank(double value, IEnumerable<double> values)
         {   // Знак сравнения роли не играет
-            return values.Count(curValue => curValue < value);
+            var greaterCount = values.Count(curValue => curValue < value);
+            var equalCount = values.Count(curValue => curValue == value);
+            var rank = Enumerable.Range(greaterCount, equalCount).Average();
+            return rank;
         }
     }
 }
