@@ -92,7 +92,7 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                     {
                         ++coincidenceCount;
                     }
-                    else
+                    if (y.ElementAt(j) < curY)
                     {
                         ++inversionCount;
                     }
@@ -101,7 +101,16 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                 q += inversionCount;
             }
 
-            return 2.0 * (p - q) / count / (count - 1);
+            var uX = KendallCorrection(rankX);
+            var uY = KendallCorrection(rankY);
+
+           
+            var dividerX = KedallDivider(count, uX);
+            var dividerY = KedallDivider(count, uY);
+
+            var s = p - q;
+
+            return s / System.Math.Sqrt(dividerX * dividerY);
         }
 
         private static IEnumerable<double> Rank(IEnumerable<double> values)
@@ -116,6 +125,18 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             var equalCount = values.Count(curValue => curValue == value);
             var rank = Enumerable.Range(greaterCount, equalCount).Average();
             return rank;
+        }
+
+        private static double KendallCorrection(IEnumerable<double> ranks)
+        {
+            return ranks.GroupBy(rank => rank)
+                        .Select(rg => rg.Count() * (rg.Count() - 1))
+                        .Sum() / 2.0;
+        }
+
+        private static double KedallDivider(int n, double u)
+        {
+            return n * (n - 1) / 2.0 - u;
         }
     }
 }
