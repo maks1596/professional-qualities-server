@@ -60,9 +60,20 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
             var rankY = Rank(y);
 
             var d2Sum = rankX.Select((curX, index) => System.Math.Pow(curX - rankY.ElementAt(index), 2))
-                          .Sum();
+                             .Sum();
+            var correctionX = SpearmanCorrection(rankX);
+            var correctionY = SpearmanCorrection(rankY);
 
-            return 1.0 - 6 * d2Sum / (System.Math.Pow(count, 3) - count);
+            return 1.0 - 6 * d2Sum / 
+                (System.Math.Pow(count, 3) - count - 
+                (correctionX + correctionY));
+        }
+
+        private static double SpearmanCorrection(IEnumerable<double> values)
+        {
+            return values.GroupBy(value => value)
+                         .Select(gv => System.Math.Pow(gv.Count(), 3) - gv.Count())
+                         .Sum() / 2.0;
         }
 
         public static double KendallCoefficient(IEnumerable<double> x, IEnumerable<double> y)
@@ -101,12 +112,12 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
                 q += inversionCount;
             }
 
-            var uX = KendallCorrection(rankX);
-            var uY = KendallCorrection(rankY);
+            var correctionX = KendallCorrection(rankX);
+            var correctionY = KendallCorrection(rankY);
 
            
-            var dividerX = KedallDivider(count, uX);
-            var dividerY = KedallDivider(count, uY);
+            var dividerX = KedallDivider(count, correctionX);
+            var dividerY = KedallDivider(count, correctionY);
 
             var s = p - q;
 
