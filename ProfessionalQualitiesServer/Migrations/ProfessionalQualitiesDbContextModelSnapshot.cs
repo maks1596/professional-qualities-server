@@ -103,11 +103,17 @@ namespace ProfessionalQualitiesServer.Migrations
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<int>("ExpertAsessment");
+
+                    b.Property<int>("ProfessionId");
+
                     b.Property<int>("TestId");
 
                     b.Property<int>("TestedId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfessionId");
 
                     b.HasIndex("TestId");
 
@@ -338,6 +344,11 @@ namespace ProfessionalQualitiesServer.Migrations
 
             modelBuilder.Entity("ProfessionalQualitiesServer.PassedTestEntity", b =>
                 {
+                    b.HasOne("ProfessionalQualitiesServer.ProfessionEntity", "Profession")
+                        .WithMany()
+                        .HasForeignKey("ProfessionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("ProfessionalQualitiesServer.TestEntity", "Test")
                         .WithMany("PassedTests")
                         .HasForeignKey("TestId")

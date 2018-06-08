@@ -270,6 +270,10 @@ namespace ProfessionalQualitiesServer
         public int TestedId { get; set; }
         public UserEntity Tested { get; set; }
 
+        public int ProfessionId { get; set; }
+        public ProfessionEntity Profession { get; set; }
+        public int ExpertAsessment { get; set; }
+
         public DateTime Date { get; set; }
 
         public List<AnswerEntity> Answers { get; set; }

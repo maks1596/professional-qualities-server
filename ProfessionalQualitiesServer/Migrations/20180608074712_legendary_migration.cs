@@ -35,7 +35,11 @@ namespace ProfessionalQualitiesServer.Migrations
                     table.PrimaryKey("PK_Professions", x => x.Id);
                 });
 
-            migrationBuilder.InsertData("Professions", "Name", Constants.ProgrammerProfessionString);
+            migrationBuilder.InsertData(
+                "Professions",
+                "Name",
+                Constants.ProgrammerProfessionString
+                );
 
             migrationBuilder.CreateTable(
                 name: "Roles",
@@ -51,13 +55,14 @@ namespace ProfessionalQualitiesServer.Migrations
                 });
 
             migrationBuilder.InsertData(
-                "Roles", 
-                "Name", 
-                new object[] 
+                "Roles",
+                "Name",
+                new object[]
                 {
                     Constants.AdminRoleString,
                     Constants.UserRoleString
-                });
+                }
+                );
 
             migrationBuilder.CreateTable(
                 name: "Scales",
@@ -110,23 +115,26 @@ namespace ProfessionalQualitiesServer.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.InsertData("Users",
+            migrationBuilder.InsertData(
+                "Users",
                 new string[]
                 {
                     "Deleted",
                     "Login",
                     "Password",
                     "RoleId"
-                },
+                }, 
                 new object[]
                 {
                     false,
                     "admin",
                     "password",
                     1
-                });
+                }
+                );
 
-            migrationBuilder.InsertData("Users",
+            migrationBuilder.InsertData(
+                "Users",
                 new string[]
                 {
                     "Deleted",
@@ -140,7 +148,8 @@ namespace ProfessionalQualitiesServer.Migrations
                     "user",
                     "password",
                     2
-                });
+                }
+                );
 
             migrationBuilder.CreateTable(
                 name: "EvaluationMaps",
@@ -222,12 +231,20 @@ namespace ProfessionalQualitiesServer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Date = table.Column<DateTime>(nullable: false),
+                    ExpertAsessment = table.Column<int>(nullable: false),
+                    ProfessionId = table.Column<int>(nullable: false),
                     TestId = table.Column<int>(nullable: false),
                     TestedId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PassedTests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PassedTests_Professions_ProfessionId",
+                        column: x => x.ProfessionId,
+                        principalTable: "Professions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PassedTests_Tests_TestId",
                         column: x => x.TestId,
@@ -431,6 +448,11 @@ namespace ProfessionalQualitiesServer.Migrations
                 column: "ScaleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PassedTests_ProfessionId",
+                table: "PassedTests",
+                column: "ProfessionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PassedTests_TestId",
                 table: "PassedTests",
                 column: "TestId");
@@ -501,9 +523,6 @@ namespace ProfessionalQualitiesServer.Migrations
                 name: "TestsAnswerOptions");
 
             migrationBuilder.DropTable(
-                name: "Professions");
-
-            migrationBuilder.DropTable(
                 name: "Questions");
 
             migrationBuilder.DropTable(
@@ -514,6 +533,9 @@ namespace ProfessionalQualitiesServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "AnswerOptions");
+
+            migrationBuilder.DropTable(
+                name: "Professions");
 
             migrationBuilder.DropTable(
                 name: "Tests");
