@@ -1,0 +1,51 @@
+            migrationBuilder.InsertData(
+                "Professions",
+                "Name",
+                Constants.ProgrammerProfessionString
+                );
+
+ migrationBuilder.InsertData(
+                "Roles",
+                "Name",
+                new object[]
+                {
+                    Constants.AdminRoleString,
+                    Constants.UserRoleString
+                }
+                );
+
+migrationBuilder.InsertData(
+                "Users",
+                new string[]
+                {
+                    "Deleted",
+                    "Login",
+                    "Password",
+                    "RoleId"
+                }, 
+                new object[]
+                {
+                    false,
+                    "admin",
+                    "password",
+                    1
+                }
+                );
+
+            migrationBuilder.InsertData(
+                "Users",
+                new string[]
+                {
+                    "Deleted",
+                    "Login",
+                    "Password",
+                    "RoleId"
+                },
+                new object[]
+                {
+                    false,
+                    "user",
+                    "password",
+                    2
+                }
+                );

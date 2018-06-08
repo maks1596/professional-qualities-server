@@ -12,6 +12,7 @@ namespace ProfessionalQualitiesServer
 
         public DbSet<RoleEntity> Roles { get; set; }
         public DbSet<UserEntity> Users { get; set; }
+        public DbSet<PersonalDataEntity> PersonalData { get; set; }
         public DbSet<ProfessionEntity> Professions { get; set; }
 
         public DbSet<TestEntity> Tests { get; set; }
@@ -140,7 +141,7 @@ namespace ProfessionalQualitiesServer
         public int UserId { get; set; }
         public UserEntity User { get; set; }
 
-        public int ProfessionId { get; set; }
+        public int? ProfessionId { get; set; }
         public ProfessionEntity Profession { get; set; }
     }
 
@@ -270,7 +271,7 @@ namespace ProfessionalQualitiesServer
         public int TestedId { get; set; }
         public UserEntity Tested { get; set; }
 
-        public int ProfessionId { get; set; }
+        public int? ProfessionId { get; set; }
         public ProfessionEntity Profession { get; set; }
         public int ExpertAsessment { get; set; }
 

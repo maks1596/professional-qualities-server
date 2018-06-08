@@ -11,9 +11,10 @@ using System;
 namespace ProfessionalQualitiesServer.Migrations
 {
     [DbContext(typeof(ProfessionalQualitiesDbContext))]
-    partial class ProfessionalQualitiesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180608103215_nullable_profession_foreign_key")]
+    partial class nullable_profession_foreign_key
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

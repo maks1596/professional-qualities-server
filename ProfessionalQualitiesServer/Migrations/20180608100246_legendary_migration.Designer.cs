@@ -11,7 +11,7 @@ using System;
 namespace ProfessionalQualitiesServer.Migrations
 {
     [DbContext(typeof(ProfessionalQualitiesDbContext))]
-    [Migration("20180608074712_legendary_migration")]
+    [Migration("20180608100246_legendary_migration")]
     partial class legendary_migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -147,7 +147,7 @@ namespace ProfessionalQualitiesServer.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("PersonalDataEntity");
+                    b.ToTable("PersonalData");
                 });
 
             modelBuilder.Entity("ProfessionalQualitiesServer.ProfessionEntity", b =>

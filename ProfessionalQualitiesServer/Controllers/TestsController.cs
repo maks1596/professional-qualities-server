@@ -179,17 +179,24 @@ namespace ProfessionalQualitiesServer.Controllers
                 return NotFound();
             }
 
+            var userId = bindedAnswers.UserId;
+            var personalDataEntities = _dbContext.PersonalData
+                .Where(pde => pde.UserId == userId);
+            var personalDataEntity = personalDataEntities.Count() > 0 ? personalDataEntities.Single() : null;
+
+            var testId = bindedAnswers.TestId;
             var testEntity = _dbContext.Tests
                 .Include(te => te.Key)
                     .ThenInclude(ke => ke.Scale)
                 .Include(te => te.EvaluationMap)
                     .ThenInclude(eme => eme.Scale)
-                .Single(te => te.Id == bindedAnswers.TestId);
+                .Single(te => te.Id == testId);
 
             var evaluatedScales = CountPoints(bindedAnswers.Answers, testEntity.Key);
             var results = GetResults(evaluatedScales, testEntity.EvaluationMap);
 
-            int passedTestId = SaveAnswers(bindedAnswers.UserId, bindedAnswers.TestId, bindedAnswers.Answers);
+            int passedTestId = SavePassedTest(userId, personalDataEntity, testId);
+            SaveAnswers(passedTestId, bindedAnswers.Answers);
             SaveResults(passedTestId, results);
 
             return Ok(results);
@@ -236,28 +243,44 @@ namespace ProfessionalQualitiesServer.Controllers
             }
         }
 
-        private int SaveAnswers(int userId, int testId, IEnumerable<Answer> answers)
+        private int SavePassedTest(int userId, PersonalDataEntity personalData, int testId)
         {
+            int? professionId = 0;
+            int expertAssessment = -1;
+            
+            if (personalData != null)
+            {
+                expertAssessment = personalData.ExpertAssessment;
+                professionId = personalData.ProfessionId;
+            }
+
             var passedTestEntity = new PassedTestEntity
             {
-                TestedId = userId,
                 TestId = testId,
+                TestedId = userId,
+                ProfessionId = professionId,
+                ExpertAsessment = expertAssessment,
                 Date = DateTime.Now
             };
-            _dbContext.Add(passedTestEntity);
 
+            _dbContext.Add(passedTestEntity);
+            _dbContext.SaveChanges();
+            return passedTestEntity.Id;
+        }
+
+        private void SaveAnswers(int passedTestId, IEnumerable<Answer> answers)
+        {
             foreach (var answer in answers)
             {
                 var answerEntity = new AnswerEntity
                 {
-                    PassedTestId = passedTestEntity.Id,
+                    PassedTestId = passedTestId,
                     QuestionId = answer.QuestionId,
                     AnswerId = answer.AnswerId
                 };
                 _dbContext.Add(answerEntity);
             }
             _dbContext.SaveChanges();
-            return passedTestEntity.Id;
         }
 
         private void SaveResults(int passedTestId, IEnumerable<ScaleResult> results)

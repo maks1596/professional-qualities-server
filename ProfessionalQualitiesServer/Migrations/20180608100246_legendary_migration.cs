@@ -123,7 +123,7 @@ namespace ProfessionalQualitiesServer.Migrations
                     "Login",
                     "Password",
                     "RoleId"
-                }, 
+                },
                 new object[]
                 {
                     false,
@@ -260,7 +260,7 @@ namespace ProfessionalQualitiesServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PersonalDataEntity",
+                name: "PersonalData",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -274,15 +274,15 @@ namespace ProfessionalQualitiesServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonalDataEntity", x => x.Id);
+                    table.PrimaryKey("PK_PersonalData", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PersonalDataEntity_Professions_ProfessionId",
+                        name: "FK_PersonalData_Professions_ProfessionId",
                         column: x => x.ProfessionId,
                         principalTable: "Professions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PersonalDataEntity_Users_UserId",
+                        name: "FK_PersonalData_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -463,13 +463,13 @@ namespace ProfessionalQualitiesServer.Migrations
                 column: "TestedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersonalDataEntity_ProfessionId",
-                table: "PersonalDataEntity",
+                name: "IX_PersonalData_ProfessionId",
+                table: "PersonalData",
                 column: "ProfessionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PersonalDataEntity_UserId",
-                table: "PersonalDataEntity",
+                name: "IX_PersonalData_UserId",
+                table: "PersonalData",
                 column: "UserId",
                 unique: true);
 
@@ -511,7 +511,7 @@ namespace ProfessionalQualitiesServer.Migrations
                 name: "Keys");
 
             migrationBuilder.DropTable(
-                name: "PersonalDataEntity");
+                name: "PersonalData");
 
             migrationBuilder.DropTable(
                 name: "QuestionsAnswerOptions");
