@@ -11,26 +11,21 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
         {
             bool WhereProfessionId(PassedTestEntity pte)
             {
-                var personalData = pte.Tested.PersonalData;
-                if (personalData == null)
-                {
-                    return false;
-                }
 
                 if (professionId > 0)
                 {
-                    return personalData.ProfessionId == professionId;
+                    return pte.ProfessionId == professionId;
                 }
                 else if (professionId < 0)
                 {
-                    return personalData.ProfessionId != (-professionId);
+                    return pte.ProfessionId != (-professionId);
                 }
                 return true;
             }
 
             var resultEntities = testEntity.PassedTests
                                            .Where(WhereProfessionId)
-                                           .Where(WhereTestedEstimated)
+                                           .Where(pde => pde.ExpertAsessment > -1)
                                            .SelectMany(pte => pte.Results)
                                            .Where(re => re.ScaleId == scaleId);
 
@@ -50,15 +45,5 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 
         public string GroupName { get; set; }
         public IEnumerable<CorrelationValue> CorrelationValues { get; set; }
-        
-
-        private bool WhereTestedEstimated(PassedTestEntity pte)
-        {
-            var personalData = pte.Tested.PersonalData;
-            if (personalData != null) {
-                return personalData.ExpertAssessment > -1;
-            }
-            return false;
-        }
     }
 }

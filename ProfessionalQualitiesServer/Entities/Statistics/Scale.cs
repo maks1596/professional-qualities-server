@@ -54,10 +54,10 @@ namespace ProfessionalQualitiesServer.Entities.Statistics
 
         private bool IsProgrammer(ResultEntity re)
         {
-            var personalData = re.PassedTest.Tested.PersonalData;
-            if (personalData != null)
+            var professionEntity = re.PassedTest.Profession;
+            if (professionEntity != null)
             {
-                return personalData.Profession.Name == Constants.ProgrammerProfessionString;
+                return professionEntity.Name == Constants.ProgrammerProfessionString;
             }
             return false;
         }
