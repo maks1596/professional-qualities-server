@@ -245,7 +245,7 @@ namespace ProfessionalQualitiesServer.Controllers
 
         private int SavePassedTest(int userId, PersonalDataEntity personalData, int testId)
         {
-            int? professionId = 0;
+            int? professionId = null;
             int expertAssessment = -1;
             
             if (personalData != null)
