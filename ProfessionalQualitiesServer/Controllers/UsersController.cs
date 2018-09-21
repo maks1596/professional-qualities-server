@@ -37,6 +37,7 @@ namespace ProfessionalQualitiesServer.Controllers
                 var user = new User(_dbContext.Users
                                     .Include(userEntity => userEntity.PersonalData)
                                         .ThenInclude(personalDataEntity => personalDataEntity.Profession)
+                                    .Include(userEntity => userEntity.Role)
                                     .Single(userEntity => userEntity.Id == id));
                 return Ok(user);
             }
