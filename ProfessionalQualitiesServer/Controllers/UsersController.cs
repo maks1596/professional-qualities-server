@@ -72,9 +72,9 @@ namespace ProfessionalQualitiesServer.Controllers
             return Ok();
         }
 
-        // PUT: api/users
+        // PATCH: api/users
         [HttpPatch]
-        public IActionResult Patch([FromBody] User user) // TODO: Заменить User на PersonalData
+        public IActionResult Patch([FromBody] User user)
         {
             if (_dbContext.Users.Any(ue => ue.Id == user.Id))
             {
@@ -82,7 +82,9 @@ namespace ProfessionalQualitiesServer.Controllers
                                 .Include(ue => ue.PersonalData)
                                     .ThenInclude(pde => pde.Profession)
                                 .Single(ue => ue.Id == user.Id);
-                var newPersonalData = user.ToEntity(_dbContext).PersonalData;
+
+                var newUserEntity = user.ToEntity(_dbContext);
+                var newPersonalData = newUserEntity.PersonalData;
                 if (userEntity.PersonalData == null)
                 {
                     userEntity.PersonalData = new PersonalDataEntity();
