@@ -57,8 +57,8 @@ namespace ProfessionalQualitiesServer.Controllers
         }
 
         // PUT: api/users
-        [HttpPut]
-        public IActionResult Put([FromBody]User user)
+        [HttpPost]
+        public IActionResult Add([FromBody]User user)
         {
             bool loginIsUsed = _dbContext.Users
                                .Any(userEntity => userEntity.Login == user.Login);
@@ -73,8 +73,8 @@ namespace ProfessionalQualitiesServer.Controllers
         }
 
         // PATCH: api/users
-        [HttpPatch]
-        public IActionResult Patch([FromBody] User user)
+        [HttpPut]
+        public IActionResult Update([FromBody] User user)
         {
             if (_dbContext.Users.Any(ue => ue.Id == user.Id))
             {
